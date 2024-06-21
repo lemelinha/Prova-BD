@@ -71,6 +71,18 @@ abstract class Router {
             'action' => 'entrada'
         ];
 
+        $routes['saidaForm'] = [
+            'router' => '/saida/form',
+            'controller' => 'FilmeController',
+            'action' => 'saidaForm'
+        ];
+
+        $routes['saida'] = [
+            'router' => '/saida',
+            'controller' => 'FilmeController',
+            'action' => 'saida'
+        ];
+
         $this->routes = $routes;
     }
 }

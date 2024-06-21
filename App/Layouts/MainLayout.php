@@ -34,7 +34,7 @@
         <span>
             <label><i class="fa-solid fa-caret-right"></i>Inventário</label>
             <a href="/entrada/form">Entrada</a>
-            <a href="/cadastrar/categoria/form">Saída</a>
+            <a href="/saida/form">Saída</a>
         </span>
     </nav>
     <?php $this->renderView($this->page->view, $this->page->viewDirectory) ?>

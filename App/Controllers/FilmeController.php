@@ -24,7 +24,7 @@ class FilmeController extends Controller {
     public function retornarFilmes ($for) {
         $FilmeModel = new Filme();
 
-        $this->filmes = $FilmeModel->retornarFilmes();
+        [$this->filmes, $this->inventario] = $FilmeModel->retornarFilmes();
 
         if ($for == 'display') {
             $this->renderView('filmesDisplay', 'ServerRequests');
@@ -45,5 +45,30 @@ class FilmeController extends Controller {
         $FilmeModel = new Filme();
         $FilmeModel->entrada($filme, $loja, $entrada);
         echo json_encode(['erro' => false, 'message' => 'Entrada efetuada com sucesso!']);
+    }
+
+    public function saidaForm () {
+        $this->render('saida', 'MainLayout', 'Filme');
+    }
+
+    public function saida() {
+        $filme = $_POST['filme']??null;
+        $loja = $_POST['loja']??null;
+        $saida = $_POST['saida']??null;
+        
+        $FilmeModel = new Filme();
+
+        if (!$FilmeModel->temInventario($filme, $loja)) {
+            echo json_encode(['message' => 'Efetue a entrada do filme primeiro']);
+            die();
+        }
+
+        if (!$FilmeModel->temEstoqueDisponivel($filme, $loja, $saida)) {
+            echo json_encode(['message' => "Não temos essa quantidade na loja $loja"]);
+            die();
+        }
+
+        $FilmeModel->saida($filme, $loja, $saida);
+        echo json_encode(['erro' => false, 'message' => 'Saída efetuada com sucesso!']);
     }
 }

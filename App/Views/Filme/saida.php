@@ -1,10 +1,10 @@
 <main style="justify-content: center">
-    <h1>Entrada de Filme</h1>
+    <h1>Saída de Filme</h1>
     <form>
         <select name="filme" required></select>
         <select name="loja" required></select>
-        <input type="number" name="entrada" placeholder="Entrada" min="0" step="0" required>
-        <input type="submit" value="Fazer Entrada">
+        <input type="number" name="saida" placeholder="Saída" min="0" step="0" required>
+        <input type="submit" value="Fazer Saída">
     </form>
     <p id="retorno"></p>
     <script>
@@ -33,10 +33,10 @@
 
             var retorno = $('#retorno')
 
-            retorno.text('Efetuando Entrada...')
+            retorno.text('Efetuando Saída...')
 
             $.ajax({
-                url: '/entrada',
+                url: '/saida',
                 type: 'post',
                 dataType: 'json',
                 data: $(this).serialize()
