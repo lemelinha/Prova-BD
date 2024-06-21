@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `db_prova_bd_2mod_etec`.`tb_loja` (
   `nm_endereco` VARCHAR(60) NOT NULL,
   `nm_bairro` VARCHAR(60) NOT NULL,
   `nm_cidade` VARCHAR(60) NOT NULL,
-  `sg_estado` CHAR(2) NOT NULL,
+  `cd_estado` CHAR(2) NOT NULL,
   PRIMARY KEY (`cd_loja`))
 ENGINE = InnoDB;
 
@@ -75,6 +75,7 @@ CREATE TABLE IF NOT EXISTS `db_prova_bd_2mod_etec`.`tb_inventario` (
   `cd_inventario` INT NOT NULL AUTO_INCREMENT,
   `id_filme` INT NOT NULL,
   `id_loja` INT NOT NULL,
+  `qt_filme` INT NOT NULL,
   PRIMARY KEY (`cd_inventario`),
   INDEX `fk_tb_inventario_tb_filme1_idx` (`id_filme` ASC) ,
   INDEX `fk_tb_inventario_tb_loja1_idx` (`id_loja` ASC) ,
