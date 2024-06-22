@@ -26,7 +26,7 @@ class Filme extends Model {
         }
     }
 
-    public function retornarFilmes() {
+    public function retornarFilmes($id=null) {
         $sql = "SELECT 
                     cd_filme,
                     nm_filme,
@@ -42,10 +42,13 @@ class Filme extends Model {
                     ON
                         id_categoria = cd_categoria
         ";
+        $params=[];
+        if ($id != null) {
+            $sql .= "WHERE cd_filme = ?";
+            array_push($params, $id);
+        }
 
-        $inventario = $this->retornarInventario();
-
-        return [$this->executeStatement($sql), $inventario];
+        return $this->executeStatement($sql, $params);
     }
 
     public function retornarInventario () {
@@ -138,5 +141,30 @@ class Filme extends Model {
         $query = $this->db->prepare($sql);
         $query->bindParam(':filme', $id);
         $query->execute();
+    }
+
+    public function editarFilme($filme, $desc, $valor, $categoria, $id) {
+        try {
+            $sql = "UPDATE
+                        tb_filme
+                    SET
+                        nm_filme = :filme,
+                        ds_filme = :ds,
+                        vl_filme = :valor,
+                        id_categoria = :categoria
+                    WHERE
+                        cd_filme = :id
+            ";
+            $query = $this->db->prepare($sql);
+            $query->bindParam(':filme', $filme);
+            $query->bindParam(':ds', $desc);
+            $query->bindParam(':valor', $valor);
+            $query->bindParam(':categoria', $categoria);
+            $query->bindParam(':id', $id);
+            $query->execute();
+        } catch (\PDOException $e) {
+            echo json_encode(['erro' => true, 'message' => 'Verifique as informações inseridas']);
+            die();
+        }
     }
 }

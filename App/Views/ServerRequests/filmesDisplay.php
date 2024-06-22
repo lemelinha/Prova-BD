@@ -18,6 +18,7 @@
                 <?php endforeach; ?>
             </div>
             <div class="btns">
+                <i class="fa-solid fa-pen" id="<?= $filme->cd_filme ?>"></i>
                 <i class="fa-solid fa-trash" id="<?= $filme->cd_filme ?>"></i>
             </div>
         </div>
@@ -34,5 +35,8 @@
         .done(function (data) {
             location.reload()
         })
+    })
+    $('.fa-pen').on('click', function () {
+        location.href = `/editar/filme/id/${$(this).attr('id')}/form`
     })
 </script>

@@ -1,9 +1,13 @@
+<?php 
+    $editar = isset($this->loja);
+?>
+
 <main style="justify-content: center">
-    <h1>Cadastrar Loja</h1>
+    <h1><?= $editar?'Editar':'Cadastrar' ?> Loja</h1>
     <form>
-        <input type="text" name="endereco" placeholder="Endereço" required>
-        <input type="text" name="bairro" placeholder="Bairro" required>
-        <input type="text" name="cidade" placeholder="cidade" required>
+        <input type="text" name="endereco" placeholder="Endereço" required value="<?= $editar?$this->loja->nm_endereco:'' ?>">
+        <input type="text" name="bairro" placeholder="Bairro" required value="<?= $editar?$this->loja->nm_bairro:'' ?>">
+        <input type="text" name="cidade" placeholder="cidade" required value="<?= $editar?$this->loja->nm_cidade:'' ?>">
         <select name="estado" required>
             <option value="">Selecione um estado</option>
             <option value="AC">Acre</option>
@@ -34,19 +38,22 @@
             <option value="SE">Sergipe</option>
             <option value="TO">Tocantins</option>
         </select>
-        <input type="submit" value="Cadastrar">
+        <input type="submit" value="<?= $editar?'Editar':'Cadastrar' ?>">
     </form>
     <p id="retorno">
         
     </p>
     <script>
+        $(document).ready(function () {
+            $('select[name="estado"]').val('<?= $editar?$this->loja->cd_estado:'' ?>')
+        })
         $('form').on('submit', function (e) {
             e.preventDefault()
 
             var retorno = $('#retorno')
 
             $.ajax({
-                url: '/cadastrar/loja',
+                url: '<?= $editar?"/editar/loja/id/{$this->loja->cd_loja}":'/cadastrar/loja' ?>',
                 type: 'post',
                 dataType: 'json',
                 data: $(this).serialize()

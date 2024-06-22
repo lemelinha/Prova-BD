@@ -7,19 +7,44 @@ use App\Controllers\CategoriaController;
 use App\Controllers\LojaController;
 
 class CrudController extends Controller {
-    public function carregarFormCadastro ($cadastro) {
-        switch ($cadastro['cadastrar']) {
-            case 'filme':
-                $this->render('filmeCadastrarForm', 'MainLayout', 'Filme');
-                break;
+    public function carregarForm ($uri) {
+        if (isset($uri['cadastrar'])) {
+            switch ($uri['cadastrar']) {
+                case 'filme':
+                    $this->render('filmeForm', 'MainLayout', 'Filme');
+                    break;
+    
+                case 'categoria':
+                    $this->render('categoriaForm', 'MainLayout', 'Categoria');
+                    break;
+    
+                case 'loja':
+                    $this->render('lojaForm', 'MainLayout', 'Loja');
+                    break;
+            }
+            return;
+        }
+        if (isset($uri['editar'])) {
+            switch ($uri['editar']) {
+                case 'filme':
+                    $filmeController = new FilmeController();
+                    $filmeController->editarFilmeForm($uri['id']);
 
-            case 'categoria':
-                $this->render('categoriaCadastrarForm', 'MainLayout', 'Categoria');
-                break;
+                    break;
+    
+                case 'categoria':
+                    $categoriaController = new CategoriaController();
+                    $categoriaController->editarCategoriaForm($uri['id']);
 
-            case 'loja':
-                $this->render('lojaCadastrarForm', 'MainLayout', 'Loja');
-                break;
+                    break;
+    
+                case 'loja':
+                    $lojaController = new LojaController();
+                    $lojaController->editarLojaForm($uri['id']);
+                    
+                    break;
+            }
+            return;
         }
     }
 
@@ -40,6 +65,28 @@ class CrudController extends Controller {
             case 'loja':
                 $lojaController = new LojaController();
                 $lojaController->cadastrarLoja();
+
+                break;
+        }
+    }
+
+    public function editar($editar) {
+        switch ($editar['editar']) {
+            case 'filme':
+                $filmeController = new FilmeController();
+                $filmeController->editarFilme($editar['id']);
+
+                break;
+
+            case 'categoria':
+                $categoriaController = new CategoriaController();
+                $categoriaController->editarCategoria($editar['id']);
+
+                break;
+
+            case 'loja':
+                $lojaController = new LojaController();
+                $lojaController->editarLoja($editar['id']);
 
                 break;
         }

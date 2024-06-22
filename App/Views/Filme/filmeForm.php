@@ -1,11 +1,15 @@
+<?php
+    $editar = isset($this->filme);
+?>
+
 <main style="justify-content: center">
-    <h1>Cadastrar Filme</h1>
+    <h1><?= $editar?'Editar':'Cadastrar' ?> Filme</h1>
     <form>
-        <input type="text" name="titulo" placeholder="Título" required>
-        <textarea name="descricao" placeholder="Descrição" required></textarea>
-        <input type="number" name="valor" placeholder="Valor" step="0.01" min="0.01" max="9999.99" required>
+        <input type="text" name="titulo" placeholder="Título" required value="<?= $editar?$this->filme->nm_filme:'' ?>">
+        <textarea name="descricao" placeholder="Descrição" required><?= $editar?$this->filme->ds_filme:'' ?></textarea>
+        <input type="number" name="valor" placeholder="Valor" step="0.01" min="0.01" max="9999.99" required value="<?= $editar?$this->filme->vl_filme:'' ?>">
         <select name="categoria" required></select>
-        <input type="submit" value="Cadastrar">
+        <input type="submit" value="<?= $editar?'Editar':'Cadastrar' ?>">
     </form>
     <p id="retorno">
         
@@ -19,6 +23,7 @@
             })
             .done(function (data) {
                 $('select[name="categoria"]').html(data)
+                $('select[name="categoria"]').val("<?= $editar?$this->filme->cd_filme:'' ?>")
             })
         })
         $('form').on('submit', function (e) {
@@ -27,7 +32,7 @@
             var retorno = $('#retorno')
 
             $.ajax({
-                url: '/cadastrar/filme',
+                url: '<?= $editar?"/editar/filme/id/{$this->filme->cd_filme}":'/cadastrar/filme' ?>',
                 type: 'post',
                 dataType: 'json',
                 data: $(this).serialize()

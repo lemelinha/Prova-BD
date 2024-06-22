@@ -37,4 +37,21 @@ class LojaController extends Controller {
         $LojaModel->deletarLoja($id);
         echo json_encode(['erro' => false, 'message' => 'Loja deletado com sucesso!']);
     }
+
+    public function editarLojaForm($id) {
+        $LojaModel = new Loja();
+        $this->loja = $LojaModel->retornarLojas($id)[0];
+        $this->render('lojaForm', 'MainLayout', 'Loja');
+    }
+
+    public function editarLoja($id) {
+        $endereco = $_POST['endereco']??null;
+        $bairro = $_POST['bairro']??null;
+        $cidade = $_POST['cidade']??null;
+        $estado = $_POST['estado']??null;
+
+        $LojaModel = new Loja();
+        $LojaModel->editarLoja($endereco, $bairro, $cidade, $estado, $id);
+        echo json_encode(['erro' => false, 'message' => 'Loja editado com sucesso!']);
+    }
 }

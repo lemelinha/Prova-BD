@@ -5,6 +5,7 @@
         <div class="categoria">
             <p><?= $categoria->nm_categoria ?></p>
             <div class="btns">
+                <i class="fa-solid fa-pen" id="<?= $categoria->cd_categoria ?>"></i>
                 <i class="fa-solid fa-trash" id="<?= $categoria->cd_categoria ?>"></i>
             </div>
         </div>
@@ -20,5 +21,8 @@
         .done(function (data) {
             location.reload()
         })
+    })
+    $('.fa-pen').on('click', function () {
+        location.href = `/editar/categoria/id/${$(this).attr('id')}/form`
     })
 </script>

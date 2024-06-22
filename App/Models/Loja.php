@@ -26,13 +26,19 @@ class Loja extends Model {
         }
     }
 
-    public function retornarLojas() {
+    public function retornarLojas($id=null) {
         $sql = "SELECT 
                     *
                 FROM
                     tb_loja
         ";
-        return $this->executeStatement($sql);
+        $params=[];
+        if ($id != null) {
+            $sql .= "WHERE cd_loja = ?";
+            array_push($params, $id);
+        }
+
+        return $this->executeStatement($sql, $params);
     }
 
     public function deletarLoja($id) {
@@ -46,5 +52,30 @@ class Loja extends Model {
         $query = $this->db->prepare($sql);
         $query->bindParam(':loja', $id);
         $query->execute();
+    }
+
+    public function editarLoja($endereco, $bairro, $cidade, $estado, $id) {
+        try {
+            $sql = "UPDATE
+                        tb_loja
+                    SET
+                        nm_endereco = :endereco,
+                        nm_bairro = :bairro,
+                        nm_cidade = :cidade,
+                        cd_estado = :estado
+                    WHERE
+                        cd_loja = :id
+            ";
+            $query = $this->db->prepare($sql);
+            $query->bindParam(':endereco', $endereco);
+            $query->bindParam(':bairro', $bairro);
+            $query->bindParam(':cidade', $cidade);
+            $query->bindParam(':estado', $estado);
+            $query->bindParam(':id', $id);
+            $query->execute();
+        } catch (\PDOException $e) {
+            echo json_encode(['erro' => true, 'message' => 'Verifique as informações inseridas']);
+            die();
+        }
     }
 }

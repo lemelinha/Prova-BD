@@ -11,6 +11,7 @@
                 <p>UF: <?= $loja->cd_estado ?></p>
             </div>
             <div class="btns">
+                <i class="fa-solid fa-pen" id="<?= $loja->cd_loja ?>"></i>
                 <i class="fa-solid fa-trash" id="<?= $loja->cd_loja ?>"></i>
             </div>
         </div>
@@ -26,5 +27,8 @@
         .done(function (data) {
             location.reload()
         })
+    })
+    $('.fa-pen').on('click', function () {
+        location.href = `/editar/loja/id/${$(this).attr('id')}/form`
     })
 </script>

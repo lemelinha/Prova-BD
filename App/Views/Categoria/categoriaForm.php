@@ -1,8 +1,12 @@
+<?php
+    $editar = isset($this->categoria);
+?>
+
 <main style="justify-content: center">
-    <h1>Cadastrar Categoria</h1>
+    <h1><?= $editar?'Editar':'Cadastrar' ?> Categoria</h1>
     <form>
-        <input type="text" name="categoria" placeholder="Nome da Categoria" required>
-        <input type="submit" value="Cadastrar">
+        <input type="text" name="categoria" placeholder="Nome da Categoria" required value="<?= $editar?$this->categoria->nm_categoria:'' ?>">
+        <input type="submit" value="<?= $editar?'Editar':'Cadastrar' ?>">
     </form>
     <p id="retorno">
         
@@ -15,7 +19,7 @@
             retorno.text('Cadastrando...')
 
             $.ajax({
-                url: '/cadastrar/categoria',
+                url: '<?= $editar?"/editar/categoria/id/{$this->categoria->cd_categoria}":'/cadastrar/categoria' ?>',
                 type: 'post',
                 dataType: 'json',
                 data: $(this).serialize()

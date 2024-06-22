@@ -33,4 +33,18 @@ class CategoriaController extends Controller {
         $CategoriaModel->deletarCategoria($id);
         echo json_encode(['erro' => false, 'message' => 'Categoria deletado com sucesso!']);
     }
+
+    public function editarCategoriaForm($id) {
+        $CategoriaModel = new Categoria();
+        $this->categoria = $CategoriaModel->retornarCategorias($id)[0];
+        $this->render('categoriaForm', 'MainLayout', 'Categoria');
+    }
+
+    public function editarCategoria($id) {
+        $categoria = $_POST['categoria']??null;
+
+        $CategoriaModel = new Categoria();
+        $CategoriaModel->editarCategoria($categoria, $id);
+        echo json_encode(['erro' => false, 'message' => 'Categoria editado com sucesso!']);
+    }
 }

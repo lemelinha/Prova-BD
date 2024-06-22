@@ -20,13 +20,19 @@ class Categoria extends Model {
         }
     }
 
-    public function retornarCategorias () {
+    public function retornarCategorias ($id=null) {
         $sql = "SELECT 
                     *
                 FROM
-                    tb_categoria
+                    tb_categoria 
         ";
-        return $this->executeStatement($sql);
+        $params=[];
+        if ($id != null) {
+            $sql .= "WHERE cd_categoria = ?";
+            array_push($params, $id);
+        }
+
+        return $this->executeStatement($sql, $params);
     }
 
     public function deletarCategoria($id) {
@@ -40,5 +46,24 @@ class Categoria extends Model {
         $query = $this->db->prepare($sql);
         $query->bindParam(':categoria', $id);
         $query->execute();
+    }
+
+    public function editarCategoria($categoria, $id) {
+        try {
+            $sql = "UPDATE
+                        tb_categoria
+                    SET
+                        nm_categoria = :categoria
+                    WHERE
+                        cd_categoria = :id
+            ";
+            $query = $this->db->prepare($sql);
+            $query->bindParam(':categoria', $categoria);
+            $query->bindParam(':id', $id);
+            $query->execute();
+        } catch (\PDOException $e) {
+            echo json_encode(['erro' => true, 'message' => 'Verifique as informações inseridas']);
+            die();
+        }
     }
 }

@@ -24,9 +24,10 @@ class FilmeController extends Controller {
     public function retornarFilmes ($for) {
         $FilmeModel = new Filme();
 
-        [$this->filmes, $this->inventario] = $FilmeModel->retornarFilmes();
+        $this->filmes = $FilmeModel->retornarFilmes();
 
         if ($for == 'display') {
+            $this->inventario = $FilmeModel->retornarInventario();
             $this->renderView('filmesDisplay', 'ServerRequests');
         } else if ($for == 'forms') {
             $this->renderView('filmesForms', 'ServerRequests');
@@ -71,5 +72,22 @@ class FilmeController extends Controller {
         $FilmeModel = new Filme();
         $FilmeModel->deletarFilme($id);
         echo json_encode(['erro' => false, 'message' => 'Filme deletado com sucesso!']);
+    }
+
+    public function editarFilmeForm($id) {
+        $FilmeModel = new Filme();
+        $this->filme = $FilmeModel->retornarFilmes($id)[0];
+        $this->render('filmeForm', 'MainLayout', 'Filme');
+    }
+
+    public function editarFilme($id) {
+        $filme = $_POST['titulo']??null;
+        $desc = $_POST['descricao']??null;
+        $valor = $_POST['valor']??null;
+        $categoria = $_POST['categoria']??null;
+
+        $FilmeModel = new Filme();
+        $FilmeModel->editarFilme($filme, $desc, $valor, $categoria, $id);
+        echo json_encode(['erro' => false, 'message' => 'Filme editado com sucesso!']);
     }
 }
