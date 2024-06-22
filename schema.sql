@@ -26,6 +26,7 @@ DROP TABLE IF EXISTS `db_prova_bd_2mod_etec`.`tb_categoria` ;
 CREATE TABLE IF NOT EXISTS `db_prova_bd_2mod_etec`.`tb_categoria` (
   `cd_categoria` INT NOT NULL AUTO_INCREMENT,
   `nm_categoria` VARCHAR(60) NOT NULL,
+  `st_categoria` CHAR(1) NOT NULL DEFAULT 'A',
   PRIMARY KEY (`cd_categoria`))
 ENGINE = InnoDB;
 
@@ -41,6 +42,7 @@ CREATE TABLE IF NOT EXISTS `db_prova_bd_2mod_etec`.`tb_filme` (
   `ds_filme` LONGTEXT NOT NULL,
   `vl_filme` DECIMAL(6,2) NOT NULL,
   `id_categoria` INT NOT NULL,
+  `st_filme` CHAR(1) NOT NULL DEFAULT 'A',
   PRIMARY KEY (`cd_filme`),
   INDEX `fk_tb_filme_tb_categoria1_idx` (`id_categoria` ASC) ,
   CONSTRAINT `fk_tb_filme_tb_categoria1`
@@ -62,6 +64,7 @@ CREATE TABLE IF NOT EXISTS `db_prova_bd_2mod_etec`.`tb_loja` (
   `nm_bairro` VARCHAR(60) NOT NULL,
   `nm_cidade` VARCHAR(60) NOT NULL,
   `cd_estado` CHAR(2) NOT NULL,
+  `st_loja` CHAR(1) NOT NULL DEFAULT 'A',
   PRIMARY KEY (`cd_loja`))
 ENGINE = InnoDB;
 

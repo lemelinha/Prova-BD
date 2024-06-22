@@ -71,4 +71,10 @@ class FilmeController extends Controller {
         $FilmeModel->saida($filme, $loja, $saida);
         echo json_encode(['erro' => false, 'message' => 'Saída efetuada com sucesso!']);
     }
+
+    public function deletarFilme($id) {
+        $FilmeModel = new Filme();
+        $FilmeModel->deletarFilme($id);
+        echo json_encode(['erro' => false, 'message' => 'Filme deletado com sucesso!']);
+    }
 }

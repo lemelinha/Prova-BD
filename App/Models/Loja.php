@@ -34,4 +34,17 @@ class Loja extends Model {
         ";
         return $this->executeStatement($sql);
     }
+
+    public function deletarLoja($id) {
+        $sql = "UPDATE
+                    tb_loja
+                SET
+                    st_loja = 'D'
+                WHERE
+                    cd_loja = :loja
+        ";
+        $query = $this->db->prepare($sql);
+        $query->bindParam(':loja', $id);
+        $query->execute();
+    }
 }

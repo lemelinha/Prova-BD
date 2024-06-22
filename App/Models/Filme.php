@@ -35,6 +35,14 @@ class Filme extends Model {
                     tb_categoria
                     ON
                         id_categoria = cd_categoria
+                INNER JOIN
+                    tb_inventario
+                    ON
+                        id_filme = cd_filme
+                INNER JOIN
+                    tb_loja
+                    ON
+                        id_loja = cd_loja
         ";
 
         $inventario = $this->retornarInventario();
@@ -168,5 +176,18 @@ class Filme extends Model {
             return false;
         }
         return true;
+    }
+
+    public function deletarFilme($id) {
+        $sql = "UPDATE
+                    tb_filme
+                SET
+                    st_filme = 'D'
+                WHERE
+                    cd_filme = :filme
+        ";
+        $query = $this->db->prepare($sql);
+        $query->bindParam(':filme', $id);
+        $query->execute();
     }
 }

@@ -43,19 +43,25 @@ abstract class Router {
 
         $routes['cadastrarForm'] = [
             'router' => '/cadastrar/[a-z]+/form',
-            'controller' => 'Crud\CrudController',
+            'controller' => 'Crud\\CrudController',
             'action' => 'carregarFormCadastro'
+        ];
+
+        $routes['delete'] = [
+            'router' => '/deletar/[a-z]+/id/[0-9]+',
+            'controller' => 'Crud\\CrudController',
+            'action' => 'deletar'
         ];
 
         $routes['cadastrar'] = [
             'router' => '/cadastrar/[a-z]+',
-            'controller' => 'Crud\CrudController',
+            'controller' => 'Crud\\CrudController',
             'action' => 'cadastrar'
         ];
 
         $routes['retornar'] = [
             'router' => '/get/[a-z]+/for/[a-z]+',
-            'controller' => 'Crud\CrudController',
+            'controller' => 'Crud\\CrudController',
             'action' => 'retornar'
         ];
 

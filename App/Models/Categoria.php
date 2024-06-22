@@ -28,4 +28,17 @@ class Categoria extends Model {
         ";
         return $this->executeStatement($sql);
     }
+
+    public function deletarCategoria($id) {
+        $sql = "UPDATE
+                    tb_categoria
+                SET
+                    st_categoria = 'D'
+                WHERE
+                    cd_categoria = :categoria
+        ";
+        $query = $this->db->prepare($sql);
+        $query->bindParam(':categoria', $id);
+        $query->execute();
+    }
 }

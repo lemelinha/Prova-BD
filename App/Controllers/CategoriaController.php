@@ -27,4 +27,10 @@ class CategoriaController extends Controller {
             $this->renderView('categoriasForms', 'ServerRequests');
         }
     }
+
+    public function deletarCategoria($id) {
+        $CategoriaModel = new Categoria();
+        $CategoriaModel->deletarCategoria($id);
+        echo json_encode(['erro' => false, 'message' => 'Categoria deletado com sucesso!']);
+    }
 }

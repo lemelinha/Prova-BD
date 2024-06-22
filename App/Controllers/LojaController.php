@@ -31,4 +31,10 @@ class LojaController extends Controller {
             $this->renderView('lojasForms', 'ServerRequests');
         }
     }
+
+    public function deletarLoja($id) {
+        $LojaModel = new Loja();
+        $LojaModel->deletarLoja($id);
+        echo json_encode(['erro' => false, 'message' => 'Loja deletado com sucesso!']);
+    }
 }

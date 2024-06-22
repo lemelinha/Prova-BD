@@ -78,4 +78,23 @@ class CrudController extends Controller {
                 break;
         }
     }
+
+    public function deletar($data) {
+        switch ($data['deletar']){
+            case 'filme':
+                $filmeController = new FilmeController();
+                $filmeController->deletarFilme($data['id']);
+                break;
+                
+            case 'categoria':
+                $categoriaController = new CategoriaController();
+                $categoriaController->deletarCategoria($data['id']);
+                break;
+            
+            case 'loja':
+                $lojaController = new LojaController();
+                $lojaController->deletarLoja($data['id']);
+                break;
+        }
+    }
 }
