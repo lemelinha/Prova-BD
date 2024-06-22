@@ -28,21 +28,19 @@ class Filme extends Model {
 
     public function retornarFilmes() {
         $sql = "SELECT 
-                    *
+                    cd_filme,
+                    nm_filme,
+                    ds_filme,
+                    vl_filme,
+                    st_filme,
+                    nm_categoria,
+                    st_categoria
                 FROM
                     tb_filme
                 INNER JOIN
                     tb_categoria
                     ON
                         id_categoria = cd_categoria
-                INNER JOIN
-                    tb_inventario
-                    ON
-                        id_filme = cd_filme
-                INNER JOIN
-                    tb_loja
-                    ON
-                        id_loja = cd_loja
         ";
 
         $inventario = $this->retornarInventario();
@@ -51,61 +49,41 @@ class Filme extends Model {
     }
 
     public function retornarInventario () {
-        $sql = "SELECT 
-                    *
+        $sql = "SELECT
+                    id_filme,
+                    id_loja,
+                    cd_loja,
+                    st_loja,
+                    count(*) as qt_filme
                 FROM
                     tb_inventario
+                INNER JOIN
+                    tb_loja
+                    ON
+                        id_loja = cd_loja
+                GROUP BY
+                    id_filme, id_loja
         ";
         return $this->executeStatement($sql);
     }
 
     public function entrada($filme, $loja, $entrada) {
         try {
-            $sql = "SELECT 
-                        *
-                    FROM
+            $sql = "INSERT INTO
                         tb_inventario
-                    INNER JOIN
-                        tb_filme
-                        ON
-                            id_filme = cd_filme
-                    INNER JOIN
-                        tb_loja
-                        ON
-                            id_loja = cd_loja
-                    WHERE
-                        id_filme = ? AND
-                        id_loja = ?
+                    VALUES 
             ";
-            $result = $this->executeStatement($sql, [$filme, $loja]);
-            if (!empty($result)) {
-                $sql = "UPDATE
-                            tb_inventario
-                        SET
-                            qt_filme = :qt
-                        WHERE
-                            id_filme = :filme AND
-                            id_loja = :loja
-                ";
-                $query = $this->db->prepare($sql);
-                $query->bindValue(':qt', $result[0]->qt_filme + $entrada);
-                $query->bindParam(':filme', $filme);
-                $query->bindParam(':loja', $loja);
-                $query->execute();
-            } else {
-                $sql = "INSERT INTO
-                            tb_inventario
-                        SET
-                            qt_filme = :qt,
-                            id_filme = :filme,
-                            id_loja = :loja
-                ";
-                $query = $this->db->prepare($sql);
-                $query->bindParam(':qt', $entrada);
-                $query->bindParam(':filme', $filme);
-                $query->bindParam(':loja', $loja);
-                $query->execute();
+
+            for ($i = 0; $i < $entrada; $i++) {
+                $sql .= "(NULL, :filme, :loja),";
             }
+            $sql = rtrim($sql, ',');
+
+            $query = $this->db->prepare($sql);
+            $query->bindParam(':filme', $filme);
+            $query->bindParam(':loja', $loja);
+            $query->execute();
+
         } catch (\PDOException $e) {
             echo json_encode(['erro' => true, 'message' => 'Verifique as informações inseridas']);
             die();
@@ -113,53 +91,24 @@ class Filme extends Model {
     }
 
     public function saida($filme, $loja, $saida) {
-        $sql = "SELECT
-                    qt_filme
-                FROM
-                    tb_inventario
-                WHERE
-                    id_filme = ? AND
-                    id_loja = ?
-        ";
-        $estoque_atual = $this->executeStatement($sql, [$filme, $loja])[0]->qt_filme;
-
-        $sql = "UPDATE
-                    tb_inventario
-                SET
-                    qt_filme = :qt
-                WHERE
-                    id_filme = :filme AND
-                    id_loja = :loja
-        ";
-        $query = $this->db->prepare($sql);
-        $query->bindValue(':qt', $estoque_atual - $saida);
-        $query->bindParam(':filme', $filme);
-        $query->bindParam(':loja', $loja);
-        $query->execute();
-    }
-
-    public function temInventario($filme, $loja) {
-        $sql = "SELECT
-                    *
-                FROM
+        $sql = "DELETE FROM
                     tb_inventario
                 WHERE
                     id_filme = :filme AND
                     id_loja = :loja
+                LIMIT
+                    :saida
         ";
         $query = $this->db->prepare($sql);
         $query->bindParam(':filme', $filme);
         $query->bindParam(':loja', $loja);
+        $query->bindParam(':saida', $saida, \PDO::PARAM_INT);
         $query->execute();
-        if ($query->rowCount() == 0) {
-            return false;
-        }
-        return true;
     }
 
     public function temEstoqueDisponivel($filme, $loja, $saida) {
         $sql = "SELECT
-                    *
+                    count(*) as qt_filme
                 FROM
                     tb_inventario
                 WHERE

@@ -12,7 +12,7 @@
             <div class="filme-locacao">
                 <?php
                     foreach ($this->inventario as $inventario): 
-                        if ($filme->cd_filme != $inventario->id_filme || $filme->st_loja == 'D') continue;
+                        if ($filme->cd_filme != $inventario->id_filme || $inventario->st_loja == 'D') continue;
                     ?>
                         <p><?= $inventario->qt_filme ?> exemplares na Loja <?= $inventario->id_loja ?></p>
                 <?php endforeach; ?>

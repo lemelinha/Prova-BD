@@ -58,11 +58,6 @@ class FilmeController extends Controller {
         
         $FilmeModel = new Filme();
 
-        if (!$FilmeModel->temInventario($filme, $loja)) {
-            echo json_encode(['message' => 'Efetue a entrada do filme primeiro']);
-            die();
-        }
-
         if (!$FilmeModel->temEstoqueDisponivel($filme, $loja, $saida)) {
             echo json_encode(['message' => "Não temos essa quantidade na loja $loja"]);
             die();
